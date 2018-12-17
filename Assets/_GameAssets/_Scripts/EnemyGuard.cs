@@ -66,7 +66,7 @@ public class EnemyGuard : MonoBehaviour {
                     break;
                 case Status.Shooting: //When he has seen the PLAYER and has visual contact with him
                     print("EMPEZANDO A DISPARAR");
-                    //agent.isStopped = true;
+                    agent.isStopped = true;
                     this.transform.LookAt(playerPosition);
                     Ray rayShoot = CreateRayCast(shootPoint.transform.position, shootPoint.transform.forward);
                     eyesWatcher.transform.LookAt(player.transform.position);

@@ -29,6 +29,9 @@ public class HeroPlayer : MonoBehaviour {
     [Header("MenuMissions")]
     [SerializeField] GameObject[] missions;
     private int indexCurrentLevel = 1;
+    private int missionsComplete = 0;
+    private int[] bestScoresMission;
+
 
     private bool crounched = true;
     private string textInteractuable = "";
@@ -39,8 +42,12 @@ public class HeroPlayer : MonoBehaviour {
         interactuable.SetActive(false);
         panelMissions.SetActive(false);
         menuMissionsAvailable = false;
+        bestScoresMission = new int[missions.Length];
+        //bestScoresMission = new int[PlayerPrefs.GetInt("bestScore1"), PlayerPrefs.GetInt("bestScore2")];
     }
     void Update() {
+        //PlayerPrefs.DeleteAll();
+        print(PlayerPrefs.GetInt("bestScore0"));
         healthText.text = health + " / " + TOTAL_HEALTH;
         puntuationValueText.text = puntuation + "";
         ShootAction();
@@ -49,6 +56,7 @@ public class HeroPlayer : MonoBehaviour {
         DoAvailable_MenuMissions();
         MoveInMenuMissions();
         GoToMissionInMenuMission();
+        PutBestScoreInMenuMissions();
 
         Ray ray = new Ray(eyesPlayer.transform.position, eyesPlayer.transform.forward);
         RaycastHit hit;
@@ -71,9 +79,19 @@ public class HeroPlayer : MonoBehaviour {
 
         }
     }
+    private void PutBestScoreInMenuMissions() {
+        for (int i = 0; i < bestScoresMission.Length; i++) {
+            if (PlayerPrefs.HasKey("bestScore" + i)) {
+                bestScoresMission[i] = PlayerPrefs.GetInt("bestScore" + i);
+            }
+        }
+        for (int i = 0; i < missions.Length; i++) {
+            missions[i].transform.Find("BestValue_Mission").GetComponent<Text>().text = bestScoresMission[i].ToString();
+        }
+    }
 
     private void GoToMissionInMenuMission() {
-        if (Input.GetKeyUp(KeyCode.Q) && menuMissionsAvailable) {
+        if (Input.GetKeyUp(KeyCode.Return) && menuMissionsAvailable) {
             SceneManager.LoadScene("Level_" + indexCurrentLevel);
         }
     }
@@ -141,6 +159,12 @@ public class HeroPlayer : MonoBehaviour {
                 i = TOTAL_HEALTH;
             }
         }
-        
+
+    }
+    public int GetPuntuation() {
+        return puntuation;
+    }
+    public int GetHealth() {
+        return health;
     }
 }

@@ -1158,7 +1158,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1542984959453716}
   m_LocalRotation: {x: -0, y: 0.9680772, z: -0, w: 0.2506525}
-  m_LocalPosition: {x: 32.058113, y: 0, z: 15.958044}
+  m_LocalPosition: {x: 69.3, y: 5.03, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4208663609241872}
@@ -2107,12 +2107,14 @@ MonoBehaviour:
   eyesWatcher: {fileID: 1904779344783000}
   shootPoint: {fileID: 1174097320419108}
   player: {fileID: 0}
-  followPlayer: 0
-  health: 20
-  distanceValue: 50
+  followPlayer: 1
+  health: 10
+  distanceValue: 90
   angleValue: 60
-  damage: 1
-  cadence: 5
+  damage: 2
+  cadence: 3
+  killPoints: 0
+  healthPoints: 0
 --- !u!137 &137194652029513976
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
