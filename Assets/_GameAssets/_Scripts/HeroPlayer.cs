@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HeroPlayer : MonoBehaviour {
-    //private enum StatusPlayer { Stop, Moving, Shooting, Jumping }
-    //StatusPlayer status = StatusPlayer.Stop;
     [Header("References")]
     [SerializeField] GameObject eyesPlayer;
     [SerializeField] GameObject interactuable;
@@ -27,15 +25,15 @@ public class HeroPlayer : MonoBehaviour {
     private int equipedWeapon = 0;
 
     [Header("MenuMissions")]
-    [SerializeField] GameObject[] missions;
-    private int indexCurrentLevel = 1;
-    private int missionsComplete = 0;
-    private int[] bestScoresMission;
+    [SerializeField] GameObject[] missions; // all panel misions of the menuMissions
+    private int indexCurrentLevel = 1; // The initial position of the menuMissions
+    private int missionsComplete = 0; // To unlock the next level
+    private int[] bestScoresMission; //all best scores of the missions in an array
 
 
     private bool crounched = true;
     private string textInteractuable = "";
-    private bool state;
+    private bool state; // If the player is alive or not
     private bool menuMissionsAvailable;
 
     void Start() {
@@ -43,42 +41,45 @@ public class HeroPlayer : MonoBehaviour {
         panelMissions.SetActive(false);
         menuMissionsAvailable = false;
         bestScoresMission = new int[missions.Length];
-        //bestScoresMission = new int[PlayerPrefs.GetInt("bestScore1"), PlayerPrefs.GetInt("bestScore2")];
+        state = true;
     }
     void Update() {
-        //PlayerPrefs.DeleteAll();
-        print(PlayerPrefs.GetInt("bestScore0"));
-        healthText.text = health + " / " + TOTAL_HEALTH;
-        puntuationValueText.text = puntuation + "";
-        ShootAction();
-        CrouchAction();
+        if (IsAlive()) {
+            print(PlayerPrefs.GetInt("bestScore0"));
+            healthText.text = health + " / " + TOTAL_HEALTH;
+            puntuationValueText.text = puntuation + "";
+            ShootAction();
+            //CrouchAction(); Don't use this method
 
-        DoAvailable_MenuMissions();
-        MoveInMenuMissions();
-        GoToMissionInMenuMission();
-        PutBestScoreInMenuMissions();
+            DoAvailable_MenuMissions();
+            MoveInMenuMissions();
+            GoToMissionInMenuMission();
+            PutBestScoreInMenuMissions();
 
-        Ray ray = new Ray(eyesPlayer.transform.position, eyesPlayer.transform.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 10)) {
-            if (hit.collider.gameObject.tag == "Allie") {
-                if (hit.collider.gameObject.name == "Computer_Missions") {
-                    print(hit.collider.gameObject.tag + " esta siendo INTERACTUADO");
-                    interactuableText.text = "Pulsa E: Abrir Misiones";
-                    if (Input.GetKeyUp(KeyCode.E)) {
-                        menuMissionsAvailable = true;
-                        panelMissions.SetActive(true);
+            Ray ray = new Ray(eyesPlayer.transform.position, eyesPlayer.transform.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 10)) {
+                if (hit.collider.gameObject.tag == "Allie") {
+                    if (hit.collider.gameObject.name == "Computer_Missions") {
+                        print(hit.collider.gameObject.tag + " esta siendo INTERACTUADO");
+                        interactuableText.text = "Pulsa E: Abrir Misiones";
+                        if (Input.GetKeyUp(KeyCode.E)) {
+                            menuMissionsAvailable = true;
+                            panelMissions.SetActive(true);
+                        }
                     }
+                    Debug.DrawLine(ray.origin, hit.point);
                 }
-                Debug.DrawLine(ray.origin, hit.point);
+            } else {
+                interactuable.SetActive(false);
+                menuMissionsAvailable = false;
+                panelMissions.SetActive(false);
             }
         } else {
-            interactuable.SetActive(false);
-            menuMissionsAvailable = false;
-            panelMissions.SetActive(false);
-
+            SceneManager.LoadScene("GameOverScreen");
         }
     }
+    // Write the best scores when appears the MenuMission
     private void PutBestScoreInMenuMissions() {
         for (int i = 0; i < bestScoresMission.Length; i++) {
             if (PlayerPrefs.HasKey("bestScore" + i)) {
@@ -89,12 +90,12 @@ public class HeroPlayer : MonoBehaviour {
             missions[i].transform.Find("BestValue_Mission").GetComponent<Text>().text = bestScoresMission[i].ToString();
         }
     }
-
     private void GoToMissionInMenuMission() {
         if (Input.GetKeyUp(KeyCode.Return) && menuMissionsAvailable) {
             SceneManager.LoadScene("Level_" + indexCurrentLevel);
         }
     }
+    //To move in the menuMission when is enabled
     private void MoveInMenuMissions() {
         if (Input.GetKeyUp(KeyCode.Tab) && menuMissionsAvailable) {
             if (indexCurrentLevel == missions.Length) {
@@ -129,6 +130,7 @@ public class HeroPlayer : MonoBehaviour {
         //For now, doesn't has any use
     }
     private void CrouchAction() {
+        // Don't use, this method because it does the player inmortal
         if (Input.GetKeyDown(KeyCode.C)) {
             if (crounched) {
                 GetComponent<CharacterController>().height = 2f;
@@ -143,9 +145,12 @@ public class HeroPlayer : MonoBehaviour {
         return state;
     }
     public void TakeDamage(int damage) {
-        print("PLAYER recibe DAMAGES");
         health -= damage;
+        if(health <= 0) {
+            state = false;
+        }
     }
+    // Calculated when an enemy is down
     public void EnemyKilled(int killPoints, int healthPoints) {
         puntuation += killPoints;
         RecuperateHealth(healthPoints);

@@ -35,10 +35,7 @@ public class Mision_1Script : MonoBehaviour {
         if (enemiesKilled == enemyNumber) { //Se completaría el objetivo de la misión
             //Despliega menu de victoria
             menuVictory.SetActive(true);
-            //menuVictory.transform.Find("RecordTextVictoryPanel").gameObject.SetActive(false);
-            
             if (actuallyPuntuation > bestScore) {
-                print("HAY RECORD");
                 menuVictory.transform.Find("RecordTextVictoryPanel").gameObject.SetActive(true);
                 PlayerPrefs.SetInt("bestScore0", actuallyPuntuation);
                 PlayerPrefs.Save();
