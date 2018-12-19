@@ -15,7 +15,6 @@ public class AutomaticGun : Weapon {
     [SerializeField] float distanceAttack = 100; //Default value
     [SerializeField] protected float cadence;
     
-    
     private float otherShoot = 0;
     // Use this for initialization
     void Start() {
@@ -33,8 +32,7 @@ public class AutomaticGun : Weapon {
         
         // Check if I have bullets to reload and then if I pr
         if (total_Bullets > 0 && Input.GetKeyDown("r") && bulletsMagazine < MAX_BulletsMagazine && !reloading) {
-            Reloading();
-            Invoke("ReloadWeapon", 1);
+            gunAnimator.SetTrigger("Reloading");
         }
         //if (bulletsMagazine <= 0) {
         //    contBullets.color = Color.red;

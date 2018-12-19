@@ -19,21 +19,11 @@ public class Weapon : MonoBehaviour {
     //protected AudioSource source;
 
     protected bool reloading = false;
-    // Use this for initialization
-    void Start() {
 
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
     public virtual void PullTrigger() {
         shootSound.Play();
     }
-    public virtual void MakeDamageToEnemy() {
 
-    }
     public void ReloadWeapon() {
         for (int i = bulletsMagazine; i < MAX_BulletsMagazine; i++) {
             bulletsMagazine++;
@@ -44,6 +34,7 @@ public class Weapon : MonoBehaviour {
         }
         transform.Rotate(55, 0, 0);
         reloading = false; // CUANDO "reloading" SE VUELVE <<FALSE>>, PERMITE VOLVER A DISPARAR DESPUÉS DE RECARGAR
+
     }
     //USAMOS ESTE METODO CUANDO ESTA RECARGANDO.
     public bool Reloading() {
