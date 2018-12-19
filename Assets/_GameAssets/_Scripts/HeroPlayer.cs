@@ -35,6 +35,8 @@ public class HeroPlayer : MonoBehaviour {
     private string textInteractuable = "";
     private bool state; // If the player is alive or not
     private bool menuMissionsAvailable;
+    private bool hasCard;
+    private bool touchDoorWithCard;
 
     void Start() {
         interactuable.SetActive(false);
@@ -42,8 +44,13 @@ public class HeroPlayer : MonoBehaviour {
         menuMissionsAvailable = false;
         bestScoresMission = new int[missions.Length];
         state = true;
+        hasCard = false;
+        touchDoorWithCard = false;
+        missionsComplete = PlayerPrefs.GetInt("missionsComplete") +1;
     }
     void Update() {
+        print (missionsComplete);
+        print ("Index: "+indexCurrentLevel);
         if (IsAlive()) {
             print(PlayerPrefs.GetInt("bestScore0"));
             healthText.text = health + " / " + TOTAL_HEALTH;
@@ -66,6 +73,16 @@ public class HeroPlayer : MonoBehaviour {
                         if (Input.GetKeyUp(KeyCode.E)) {
                             menuMissionsAvailable = true;
                             panelMissions.SetActive(true);
+                        }
+                    }else if (hit.collider.gameObject.name == "SpaceDoor") {
+                        print(hit.collider.gameObject.tag + " esta siendo INTERACTUADO");
+                        interactuableText.text = "Pulsa E: Abrir Puerta";
+                        if (Input.GetKeyUp(KeyCode.E)) {
+                            if(this.hasCard == true){
+                                touchDoorWithCard = true;
+                            }else{
+
+                            }
                         }
                     }
                     Debug.DrawLine(ray.origin, hit.point);
@@ -91,7 +108,7 @@ public class HeroPlayer : MonoBehaviour {
         }
     }
     private void GoToMissionInMenuMission() {
-        if (Input.GetKeyUp(KeyCode.Return) && menuMissionsAvailable) {
+        if (Input.GetKeyUp(KeyCode.Return) && menuMissionsAvailable && missionsComplete >= indexCurrentLevel) {
             SceneManager.LoadScene("Level_" + indexCurrentLevel);
         }
     }
@@ -164,12 +181,25 @@ public class HeroPlayer : MonoBehaviour {
                 i = TOTAL_HEALTH;
             }
         }
-
+    }
+    public void TakeCard(){
+        hasCard = true;
     }
     public int GetPuntuation() {
         return puntuation;
     }
     public int GetHealth() {
         return health;
+    }
+    public bool GethasCard()
+    {
+        return hasCard;
+    }
+    public bool GetTouchDoor()
+    {
+        return touchDoorWithCard;
+    }
+    public int GetMissionsComplete(){
+        return missionsComplete;
     }
 }

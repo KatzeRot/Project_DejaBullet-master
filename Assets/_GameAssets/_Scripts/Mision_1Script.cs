@@ -15,11 +15,13 @@ public class Mision_1Script : MonoBehaviour {
     private int puntuation;
     private int actuallyPuntuation;
     private int healthPlayer;
+    private int missionsCompletePlayer;
 
     // Use this for initialization
     void Start() {
         enemyGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
         enemyNumber = enemyGameObjects.Length;
+        missionsCompletePlayer = PlayerPrefs.GetInt("missionsComplete");
     }
 
     // Update is called once per frame
@@ -33,6 +35,9 @@ public class Mision_1Script : MonoBehaviour {
         bestScore = PlayerPrefs.GetInt("bestScore0");
 
         if (enemiesKilled == enemyNumber) { //Se completaría el objetivo de la misión
+            if(missionsCompletePlayer < 2){
+                PlayerPrefs.SetInt("missionsComplete", missionsCompletePlayer++);
+            }
             //Despliega menu de victoria
             menuVictory.SetActive(true);
             if (actuallyPuntuation > bestScore) {

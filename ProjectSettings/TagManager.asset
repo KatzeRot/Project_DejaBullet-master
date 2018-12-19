@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - positionCombat
   - Allie
+  - Card
   layers:
   - Default
   - TransparentFX
