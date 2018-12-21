@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AutomaticGun : Weapon {
     private Animator gunAnimator;
@@ -14,7 +15,8 @@ public class AutomaticGun : Weapon {
     [Header("Caracteristicas")]
     [SerializeField] float distanceAttack = 100; //Default value
     [SerializeField] protected float cadence;
-    
+    [SerializeField] GameObject infoGunText;
+
     private float otherShoot = 0;
     // Use this for initialization
     void Start() {
@@ -26,10 +28,16 @@ public class AutomaticGun : Weapon {
 
     // Update is called once per frame
     void Update() {
+        if (bulletsMagazine <= 0) {
+            infoGunText.SetActive(true);
+        } else {
+            infoGunText.SetActive(false);
+        }
+
         bullets.text = bulletsMagazine + " / " + total_Bullets;
         nameGunText.text = nameGun;
         otherShoot += 0.1f;
-        
+                
         // Check if I have bullets to reload and then if I pr
         if (total_Bullets > 0 && Input.GetKeyDown("r") && bulletsMagazine < MAX_BulletsMagazine && !reloading) {
             gunAnimator.SetTrigger("Reloading");

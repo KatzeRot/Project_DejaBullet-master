@@ -66,6 +66,7 @@ public class EnemyGuard : MonoBehaviour {
                     break;
                 case Status.Shooting: //When he has seen the PLAYER and has visual contact with him
                     print("EMPEZANDO A DISPARAR");
+                    animatorEnemyGuard.SetBool("EnemyFounded", true);
                     animatorEnemyGuard.SetBool("Running", false);
                     agent.isStopped = true;
                     this.transform.LookAt(playerPosition);
@@ -83,6 +84,7 @@ public class EnemyGuard : MonoBehaviour {
                     break;
                 case Status.Waiting: //When he has seen the PLAYER but hasn't visual contact
                     if (followPlayer) {
+                        animatorEnemyGuard.SetBool("EnemyFounded", true);
                         status = Status.Running;
                     } else {
                         shootPoint.transform.rotation = new Quaternion(0f, 0f, 0f, 0f); //Default rotation of the generator bullet
@@ -98,6 +100,7 @@ public class EnemyGuard : MonoBehaviour {
 
                     break;
                 case Status.Running: //When he isn't in his position and is moving to there
+                    animatorEnemyGuard.SetBool("EnemyFounded", true);
                     if (followPlayer) {
                         animatorEnemyGuard.SetBool("Running", true);
                         agent.isStopped = false;

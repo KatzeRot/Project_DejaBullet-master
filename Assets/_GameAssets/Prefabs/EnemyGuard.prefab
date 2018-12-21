@@ -1157,8 +1157,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1542984959453716}
-  m_LocalRotation: {x: -0, y: 0.78603745, z: -0, w: -0.61817896}
-  m_LocalPosition: {x: 75.3, y: 3.1790626, z: 101}
+  m_LocalRotation: {x: -0, y: 0.92927444, z: -0, w: -0.36939022}
+  m_LocalPosition: {x: 33.66, y: 3.1790626, z: 118.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4208663609241872}
@@ -2109,10 +2109,10 @@ MonoBehaviour:
   player: {fileID: 0}
   followPlayer: 1
   health: 10
-  distanceValue: 90
+  distanceValue: 150
   angleValue: 60
   damage: 1
-  cadence: 3
+  cadence: 2
   killPoints: 0
   healthPoints: 0
 --- !u!137 &137194652029513976
